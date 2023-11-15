@@ -8,20 +8,11 @@ serverPort = 8080  # Порт для доступа по сети
 
 class MyServer(BaseHTTPRequestHandler):
 
-    def get_html_code(self):
-        html_file = 'index.html'
-        try:
-            with open(html_file, 'r', encoding='utf-8')as file:
-                code = file.read()
-                return code
-        except FileNotFoundError:
-            return 'file not found'
-
-
     def do_GET(self):
         """ Метод для обработки входящих GET-запросов """
         query_components = parse_qs(urlparse(self.path).query)
-        page_content = self.get_html_code()
+        with open("index.html", "r") as f:
+            page_content = f.read()
         self.send_response(200)  # Отправка кода ответа
         self.send_header("Content-type", "application/json")  # Отправка типа данных, который будет передаваться
         self.end_headers()  # Завершение формирования заголовков ответа
